@@ -5,7 +5,7 @@ function Board() {
     return (
         <div className="board">
             <div className="row">
-                <Letter letterPos={0} attemptVal={5} selected={true} />
+                <Letter letterPos={0} attemptVal={5} />
                 <Letter letterPos={1} attemptVal={5} />
                 <Letter letterPos={2} attemptVal={5} />
                 <Letter letterPos={3} attemptVal={5} />

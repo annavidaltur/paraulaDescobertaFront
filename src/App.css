@@ -64,6 +64,10 @@ nav h1 {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.current-cell{
+  background-color: blue;
+}
+
 #correct {
   background-color: #528d4e;
 }
