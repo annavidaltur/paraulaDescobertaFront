@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { AppContext } from "../App";
 
 function Letter({ letterPos, attemptVal }) {
-    const {board, correctWord, currAttempt, setDisabledLetters} = useContext(AppContext);
+    const {board, correctWord, currAttempt, setCurrAttempt, setDisabledLetters} = useContext(AppContext);
     const letter = board[attemptVal][letterPos]; // La letra de la celda actual
 
     // Obtenemos el estado de la letra: correcta, exista pero no en esa posición, no existe
@@ -13,7 +13,13 @@ function Letter({ letterPos, attemptVal }) {
     
     // Para seleccionar la letra sobre el tablero
     const isCurrentCell = currAttempt.attempt === attemptVal && currAttempt.letterPos === letterPos;
-    const cellClassName = isCurrentCell ? "current-cell" : "";
+    let cellClassName = "";
+    if (isCurrentCell) {
+        cellClassName = "current-cell";
+    }
+    if (letterPos === 4 && letter !== "" && currAttempt.attempt === attemptVal) {
+        cellClassName = "current-cell";
+    }
 
     useEffect(() => {
         // Deshabilitamos las letras del teclado que no sean correctas ni almost
@@ -22,8 +28,16 @@ function Letter({ letterPos, attemptVal }) {
         }
     }, [currAttempt.attempt]) // Se ejecuta con cada intento (fila completa+enter)
     
+    function handleCellClick(){
+        if(attemptVal === currAttempt.attempt)
+            setCurrAttempt({attempt: attemptVal, letterPos: letterPos})
+    }
+
     return (
-        <div className={`letter ${cellClassName}`} id={letterState}>
+        <div 
+            className={`letter ${cellClassName}`} 
+            id={letterState} 
+            onClick={handleCellClick}>
             {letter}
         </div>
     ) 
