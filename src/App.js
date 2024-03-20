@@ -5,6 +5,7 @@ import React, { useState, createContext, useEffect } from "react";
 import { boardDefault, generateWordSet } from "./Words";
 import GameOver from './components/GameOver';
 import Timer from './components/Timer';
+import Modal from './components/Modal';
 
 export const AppContext = createContext();
 
@@ -16,6 +17,7 @@ function App() {
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false })
   const [correctWord, setCorrectWord] = useState("");
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     // Cargamos la batería de palabras al iniciar la app
@@ -64,14 +66,24 @@ function App() {
     // Comprobamos si la palabra es la correcta
     if (currWord === correctWord) {
       setGameOver({ gameOver: true, guessedWord: true })
+      openModal();
       return;
     }
 
     // La palabra no es correcta y ha hcho 6 intentos
     if (currAttempt.attempt === 5) {
       setGameOver({ gameOver: true, guessedWord: false })
+      openModal();
     }
   }
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="App">
@@ -92,7 +104,13 @@ function App() {
         <div className='game'>
           <Timer />
           <Board />
-          {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+          <Keyboard />
+          
+          {gameOver.gameOver ? 
+            <Modal isOpen={modalOpen} onClose={closeModal}>
+              <GameOver />
+            </Modal> : null
+          }
         </div>
       </AppContext.Provider>
     </div>
