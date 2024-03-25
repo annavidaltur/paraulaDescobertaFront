@@ -12,7 +12,7 @@ export const AppContext = createContext();
 function App() {
   const [board, setBoard] = useState(boardDefault); // Tablero
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 }); // Puntero fila,col
-  const [wordSet, setWordSet] = useState(new Set()); // Batería de palabras
+  const [wordSet, setWordSet] = useState(undefined); // Batería de palabras
   const [disabledLetters, setDisabledLetters] = useState([]); // Letras deshabilitadas del teclado
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false })
   const [correctWord, setCorrectWord] = useState("");
@@ -21,10 +21,11 @@ function App() {
 
   useEffect(() => {
     // Cargamos la batería de palabras al iniciar la app
-    generateWordSet().then((words) => {
-      setWordSet(words.wordSet)
-      setCorrectWord(words.todaysWord.toUpperCase())
-    })
+      generateWordSet().then((result) => {
+        setWordSet(result.wordSet);
+        setCorrectWord(result.todaysWord);
+        console.log('paraula: ',result.todaysWord);
+      });
   }, [])
 
   const onSelectLetter = (keyVal) => {
@@ -99,7 +100,7 @@ function App() {
           correctWord,
           disabledLetters, setDisabledLetters,
           gameOver, setGameOver,
-          elapsedTime, setElapsedTime
+          // elapsedTime, setElapsedTime
         }}>
         <div className='game'>
           <Timer />
