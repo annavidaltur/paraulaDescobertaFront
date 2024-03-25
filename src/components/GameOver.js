@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { AppContext } from "../App";
 import { formatDate } from "../utils/utils";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 function GameOver() {
     const {gameOver, correctWord, currAttempt, elapsedTime, board} = useContext(AppContext);
@@ -9,30 +11,52 @@ function GameOver() {
 
     const generateMiniBoard = () => {
         const reversedBoard = [...board].reverse();
-        return reversedBoard.map((row, rowIndex) => (
-            <div key={rowIndex} className="mini-row">
-                {row.map((letter, colIndex) => {
-                    const isCorrect = letter === correctWord[colIndex];
-                    const isAlmost = !isCorrect && correctWord.includes(letter)
-                    return (
-                        <span key={colIndex} >
-                            {isCorrect ? '🟢' : (isAlmost ? '🟡' : '⚫')}
-                        </span>
-                    );
-                })}
-            </div>
-        ));
+        let miniBoardText = "";
+    
+        reversedBoard.forEach((row) => {
+            row.forEach((letter, colIndex) => {
+                const isCorrect = letter === correctWord[colIndex];
+                const isAlmost = !isCorrect && correctWord.includes(letter);
+                
+                if (isCorrect) 
+                    miniBoardText += '🟢';
+                else if (isAlmost)
+                    miniBoardText += '🟡';
+                else miniBoardText += '⚫';
+            });
+    
+            miniBoardText += '\n';
+        });
+    
+        return miniBoardText;
     };
+    
+    const shareOnTwitter = () => {
+        let text = "";
+        if(gameOver.guessedWord)
+            text = `Acabe de resoldre la paraula secreta d'@encreuada en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;        
+        else text = `He fallat després de ${currAttempt.attempt} intents en ${formatted}. Intenta-ho tu també!\n${generateMiniBoard()}`;
+        
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    };
+
+    const miniBoardLines = generateMiniBoard().split('\n').map((line, index) => (
+        <div key={index}>{line}</div>
+    ));
 
     return(
         <div className="gameOver">
-            <h1>Correct: {correctWord}</h1>
-            <h1>{formatted}</h1>
-            {gameOver.guessedWord && (<h3>You guessed in {currAttempt.attempt} attempts and {formatted}</h3>)}
+            <h1>Paraula correcta: {correctWord}</h1>
+            {gameOver.guessedWord && (<h3>Ho has endevinat en {currAttempt.attempt} {currAttempt.attempt === 1 ? 'intent' : 'intents'} i {formatted}</h3>)}
             
-            <div className="mini-board">
-                {generateMiniBoard()}
-            </div>
+                <div className="mini-board">
+                    {miniBoardLines}
+                </div>
+
+            <button onClick={shareOnTwitter} className="round-button">
+                <FontAwesomeIcon icon={faTwitter} style={{ fontSize: '18px' }} /> 
+            </button>
         </div>
     )
 }

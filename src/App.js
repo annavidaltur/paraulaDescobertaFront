@@ -100,7 +100,7 @@ function App() {
           correctWord,
           disabledLetters, setDisabledLetters,
           gameOver, setGameOver,
-          // elapsedTime, setElapsedTime
+          elapsedTime, setElapsedTime
         }}>
         <div className='game'>
           <Timer />

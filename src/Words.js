@@ -1,4 +1,4 @@
-import wordBank from './paraules.txt';
+import wordBank from './paraules.txt';  
 
 export const boardDefault = [
     ["", "", "", "", ""],

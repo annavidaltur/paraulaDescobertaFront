@@ -187,3 +187,22 @@ nav h1 {
 .modal button:hover {
   background-color: #0056b3;
 }
+
+.modal button.round-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px; /* Ajusta el relleno para que el botón sea completamente redondo */
+  width: 40px; /* Establece el ancho del botón */
+  height: 40px; /* Establece la altura del botón */
+  border-radius: 50%; /* Hacer el botón redondo */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto; /* Centra horizontalmente el botón */
+}
+
+.modal button.share-twitter:hover {
+  background-color: #0056b3;
+}
