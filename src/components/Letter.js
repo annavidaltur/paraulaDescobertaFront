@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { AppContext } from "../App";
 
 function Letter({ letterPos, attemptVal }) {
-    const {board, correctWord, currAttempt, setCurrAttempt, setDisabledLetters} = useContext(AppContext);
+    const {board, correctWordClean, currAttempt, setCurrAttempt, setDisabledLetters} = useContext(AppContext);
     const letter = board[attemptVal][letterPos]; // La letra de la celda actual
-
+    
     // Obtenemos el estado de la letra: correcta, exista pero no en esa posición, no existe
-    const correct = correctWord[letterPos] === letter
-    const almost = !correct && letter !== "" && correctWord.includes(letter)
+    const correct = correctWordClean[letterPos] === letter
+    const almost = !correct && letter !== "" && correctWordClean.includes(letter)
     const letterState = currAttempt.attempt > attemptVal &&
         (correct ? "correct" : almost ? "almost" : "error");
     

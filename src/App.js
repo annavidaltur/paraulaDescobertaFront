@@ -16,6 +16,7 @@ function App() {
   const [disabledLetters, setDisabledLetters] = useState([]); // Letras deshabilitadas del teclado
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false })
   const [correctWord, setCorrectWord] = useState("");
+  const [correctWordClean, setCorrectWordClean] = useState("");
   const [elapsedTime, setElapsedTime] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -24,7 +25,10 @@ function App() {
       generateWordSet().then((result) => {
         setWordSet(result.wordSet);
         setCorrectWord(result.todaysWord);
+        setCorrectWordClean(result.todaysWordClean);
         console.log('paraula: ',result.todaysWord);
+        console.log('paraula sense accents: ',result.todaysWordClean);
+        console.log('wordSet', result.wordSet);
       });
   }, [])
 
@@ -58,14 +62,14 @@ function App() {
     }
 
     // Comprobamos si la palabra introducida es una palabra real (que exista en la batería)
-    if (wordSet.has(currWord.toLowerCase())) {
+    if (wordSet.some(item => item.withoutAccent === currWord.toLowerCase())) {
       setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 }) // Pasamos a la siguiente fila y reseteamos la posición a 0  
     } else {
-      alert("Word not found")
+      alert("No existeix la paraula")
     }
 
     // Comprobamos si la palabra es la correcta
-    if (currWord === correctWord) {
+    if (currWord === correctWordClean) {
       setGameOver({ gameOver: true, guessedWord: true })
       openModal();
       return;
@@ -98,6 +102,7 @@ function App() {
           currAttempt, setCurrAttempt,
           onSelectLetter, onEnter, onDelete,
           correctWord,
+          correctWordClean,
           disabledLetters, setDisabledLetters,
           gameOver, setGameOver,
           elapsedTime, setElapsedTime

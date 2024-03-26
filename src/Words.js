@@ -1,4 +1,4 @@
-import wordBank from './paraules.txt';  
+import { wordSet } from './paraules.js';
 
 export const boardDefault = [
     ["", "", "", "", ""],
@@ -11,15 +11,15 @@ export const boardDefault = [
 
 // Lee la batería de palabras y las carga en wordSet
 export const generateWordSet = async () => {    
-  let wordSet;
-  let todaysWord;
+  let todaysWordArr;
   
-  const response = await fetch(wordBank);
-  const result = await response.text();
+  // Selecciona una palabra al azar del wordSet
+  const randomIndex = Math.floor(Math.random() * wordSet.length);
+  todaysWordArr = wordSet[randomIndex];
 
-  const wordArr = result.split("\r\n");
-  todaysWord = wordArr[Math.floor(Math.random() * wordArr.length)];
-  wordSet = new Set(wordArr);
-
-  return { wordSet: wordSet, todaysWord: todaysWord.toUpperCase() };
+  return { 
+      wordSet: wordSet, 
+      todaysWord: todaysWordArr.correct.toUpperCase(), 
+      todaysWordClean: todaysWordArr.withoutAccent.toUpperCase()
+  };
 };

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 function GameOver() {
-    const {gameOver, correctWord, currAttempt, elapsedTime, board} = useContext(AppContext);
+    const {gameOver, correctWord, correctWordClean, currAttempt, elapsedTime, board} = useContext(AppContext);
 
     const formatted = formatDate(elapsedTime)
 
@@ -15,8 +15,8 @@ function GameOver() {
     
         reversedBoard.forEach((row) => {
             row.forEach((letter, colIndex) => {
-                const isCorrect = letter === correctWord[colIndex];
-                const isAlmost = !isCorrect && correctWord.includes(letter);
+                const isCorrect = letter === correctWordClean[colIndex];
+                const isAlmost = !isCorrect && correctWordClean.includes(letter);
                 
                 if (isCorrect) 
                     miniBoardText += '🟢';
