@@ -188,7 +188,13 @@ nav h1 {
   background-color: #0056b3;
 }
 
-.modal button.round-button {
+.share-buttons-container {
+  display: flex;
+  justify-content: center; /* Alinea los botones horizontalmente */
+  align-items: center;
+}
+
+.modal button.share-button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -203,6 +209,6 @@ nav h1 {
   margin: 0 auto; /* Centra horizontalmente el botón */
 }
 
-.modal button.share-twitter:hover {
+.modal button.share-button:hover {
   background-color: #0056b3;
 }

@@ -33,13 +33,16 @@ function App() {
   }, [])
 
   const onSelectLetter = (keyVal) => {
-    if (currAttempt.letterPos > 4) // Si ha escrito las 5 letras de la fila no hacemos nada
+    if(!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
+    {
+      if (currAttempt.letterPos > 4) // Si ha escrito las 5 letras de la fila no hacemos nada
       return;
     const newBoard = [...board] // Copiamos el tablero (board)
 
     newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal // Asignamos la letra clickeada a la fila y pos
     setBoard(newBoard) // ACctualizamos el tablero
     setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos + 1 }) // Actualizamos el puntero para que la próxima letra se escriba en la posición siguiente. La fila se mantiene
+    }
   }
 
   const onDelete = () => {

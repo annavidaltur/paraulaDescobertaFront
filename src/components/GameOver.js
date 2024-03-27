@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AppContext } from "../App";
 import { formatDate } from "../utils/utils";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 function GameOver() {
     const {gameOver, correctWord, correctWordClean, currAttempt, elapsedTime, board} = useContext(AppContext);
@@ -10,23 +10,27 @@ function GameOver() {
     const formatted = formatDate(elapsedTime)
 
     const generateMiniBoard = () => {
-        const reversedBoard = [...board].reverse();
         let miniBoardText = "";
     
-        reversedBoard.forEach((row) => {
-            row.forEach((letter, colIndex) => {
+        for (let rowIndex = currAttempt.attempt - 1; rowIndex >= 0; rowIndex--) {
+            const row = board[rowIndex];
+            let rowText = "";
+    
+            for (let colIndex = 0; colIndex < row.length; colIndex++) {
+                const letter = row[colIndex];
                 const isCorrect = letter === correctWordClean[colIndex];
                 const isAlmost = !isCorrect && correctWordClean.includes(letter);
                 
                 if (isCorrect) 
-                    miniBoardText += '🟢';
+                    rowText += '🟢';
                 else if (isAlmost)
-                    miniBoardText += '🟡';
-                else miniBoardText += '⚫';
-            });
+                    rowText += '🟡';
+                else 
+                    rowText += '⚫';
+            }
     
-            miniBoardText += '\n';
-        });
+            miniBoardText = miniBoardText + rowText + '\n';
+        }
     
         return miniBoardText;
     };
@@ -41,6 +45,27 @@ function GameOver() {
         window.open(url, '_blank');
     };
 
+    const shareOnFacebook = () => {
+        let text = "";
+        if(gameOver.guessedWord)
+            text = `Acabe de resoldre la paraula secreta d'@encreuada en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;        
+        else text = `He fallat després de ${currAttempt.attempt} intents en ${formatted}. Intenta-ho tu també!\n${generateMiniBoard()}`;
+        
+        const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    };
+
+    const shareOnWhatsApp = () => {
+        let text = "";
+        if(gameOver.guessedWord)
+            text = `Acabe de resoldre la paraula secreta d'@encreuada en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;        
+        else text = `He fallat després de ${currAttempt.attempt} intents en ${formatted}. Intenta-ho tu també!\n${generateMiniBoard()}`;
+        
+        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    };
+
+
     const miniBoardLines = generateMiniBoard().split('\n').map((line, index) => (
         <div key={index}>{line}</div>
     ));
@@ -54,9 +79,18 @@ function GameOver() {
                     {miniBoardLines}
                 </div>
 
-            <button onClick={shareOnTwitter} className="round-button">
-                <FontAwesomeIcon icon={faTwitter} style={{ fontSize: '18px' }} /> 
-            </button>
+                <h3>Comparteix el teu resultat!</h3>
+                <div className="share-buttons-container">
+                    <button onClick={shareOnTwitter} className="share-button">
+                        <FontAwesomeIcon icon={faTwitter} style={{ fontSize: '18px' }} /> 
+                    </button>
+                    <button onClick={shareOnFacebook} className="share-button">
+                        <FontAwesomeIcon icon={faFacebook} style={{ fontSize: '18px' }} />
+                    </button>
+                    <button onClick={shareOnWhatsApp} className="share-button">
+                        <FontAwesomeIcon icon={faWhatsapp} style={{ fontSize: '18px' }} />
+                    </button>
+                </div>
         </div>
     )
 }
