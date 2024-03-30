@@ -6,6 +6,8 @@ import { boardDefault, generateWordSet } from "./Words";
 import GameOver from './components/GameOver';
 import Timer from './components/Timer';
 import Modal from './components/Modal';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Test from './components/Test';
 
 export const AppContext = createContext();
 
@@ -22,26 +24,26 @@ function App() {
 
   useEffect(() => {
     // Cargamos la batería de palabras al iniciar la app
-      generateWordSet().then((result) => {
-        setWordSet(result.wordSet);
-        setCorrectWord(result.todaysWord);
-        setCorrectWordClean(result.todaysWordClean);
-        console.log('paraula: ',result.todaysWord);
-        console.log('paraula sense accents: ',result.todaysWordClean);
-        console.log('wordSet', result.wordSet);
-      });
+    generateWordSet().then((result) => {
+      setWordSet(result.wordSet);
+      setCorrectWord(result.todaysWord);
+      setCorrectWordClean(result.todaysWordClean);
+      console.log('paraula: ', result.todaysWord);
+      console.log('paraula sense accents: ', result.todaysWordClean);
+      console.log('wordSet', result.wordSet);
+    });
   }, [])
 
   const onSelectLetter = (keyVal) => {
-    if(!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
+    if (!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
     {
       if (currAttempt.letterPos > 4) // Si ha escrito las 5 letras de la fila no hacemos nada
-      return;
-    const newBoard = [...board] // Copiamos el tablero (board)
+        return;
+      const newBoard = [...board] // Copiamos el tablero (board)
 
-    newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal // Asignamos la letra clickeada a la fila y pos
-    setBoard(newBoard) // ACctualizamos el tablero
-    setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos + 1 }) // Actualizamos el puntero para que la próxima letra se escriba en la posición siguiente. La fila se mantiene
+      newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal // Asignamos la letra clickeada a la fila y pos
+      setBoard(newBoard) // ACctualizamos el tablero
+      setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos + 1 }) // Actualizamos el puntero para que la próxima letra se escriba en la posición siguiente. La fila se mantiene
     }
   }
 
@@ -95,10 +97,13 @@ function App() {
 
   return (
     <div className="App">
-      <nav>
-        <h1>WORDLE VAL</h1>
+      <nav className="navbar navbar-dark bg-secondary">
+        <div className="container">
+          <h1 className="navbar-brand">WORDLE VAL</h1>
+        </div>
       </nav>
 
+      
       <AppContext.Provider
         value={{
           board, setBoard,
@@ -110,12 +115,22 @@ function App() {
           gameOver, setGameOver,
           elapsedTime, setElapsedTime
         }}>
-        <div className='game'>
-          <Timer />
-          <Board />
-          <Keyboard />
-          
-          {gameOver.gameOver ? 
+        <div className="container">
+          <div className="row">
+            <div className='col text-center'>
+              <Timer />
+            </div>
+          </div>
+          <div className="row">
+            <div className='col-3'></div>
+            <div className='col-6 text-center'>
+              <Board />            
+              <Keyboard />
+            </div>
+            <div className='col-3'></div>
+          </div>
+
+          {gameOver.gameOver ?
             <Modal isOpen={modalOpen} onClose={closeModal}>
               <GameOver />
             </Modal> : null

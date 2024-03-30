@@ -1,14 +1,16 @@
 import { useContext } from "react";
 import React from "react";
 import { AppContext } from "../App";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRightToBracket, faBackspace } from '@fortawesome/free-solid-svg-icons';
 
-function Key({keyVal, bigKey, disabled}) {
-    const {onSelectLetter, onEnter, onDelete} =  useContext(AppContext);
+function Key({ keyVal, bigKey, disabled }) {
+    const { onSelectLetter, onEnter, onDelete } = useContext(AppContext);
 
     const selectLetter = () => {
-        if(keyVal === "ENTER") {
+        if (keyVal === "ENTER") {
             onEnter();
-        } else if(keyVal === "DELETE") {
+        } else if (keyVal === "DELETE") {
             onDelete();
         } else {
             onSelectLetter(keyVal)
@@ -16,8 +18,15 @@ function Key({keyVal, bigKey, disabled}) {
     }
 
     return (
-        <div className="key" id={bigKey ? "big" : disabled && "disabled"} onClick={selectLetter}>
-            {keyVal}
+        <div 
+            className="col m-1 p-1 key border rounded-pill cursor-pointer" 
+            id={bigKey ? "big" : disabled && "disabled"} 
+            onClick={selectLetter}
+            style={{
+                // height: "50px",
+            }}
+            >                
+                {keyVal === "ENTER" ? <FontAwesomeIcon icon={faArrowRightToBracket} /> : keyVal === "DELETE" ? <FontAwesomeIcon icon={faBackspace} /> : keyVal}
         </div>
     )
 }
