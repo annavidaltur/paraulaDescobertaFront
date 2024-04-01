@@ -3,11 +3,9 @@ import Board from './components/Board';
 import Keyboard from './components/Keyboard';
 import React, { useState, createContext, useEffect } from "react";
 import { boardDefault, generateWordSet } from "./Words";
-import GameOver from './components/GameOver';
 import Timer from './components/Timer';
-import Modal from './components/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Test from './components/Test';
+import GameOverModal from './components/Modal';
 
 export const AppContext = createContext();
 
@@ -122,19 +120,19 @@ function App() {
             </div>
           </div>
           <div className="row">
-            <div className='col-3'></div>
-            <div className='col-6 text-center'>
+            <div className='col-12 text-center'>
               <Board />            
               <Keyboard />
             </div>
-            <div className='col-3'></div>
           </div>
-
-          {gameOver.gameOver ?
+          {/* <button onClick={() => openModal()}>MODAL</button> */}
+          <GameOverModal isOpen={modalOpen} onClose={closeModal} />
+          {/* {gameOver.gameOver ?
             <Modal isOpen={modalOpen} onClose={closeModal}>
               <GameOver />
             </Modal> : null
-          }
+          } */}
+          
         </div>
       </AppContext.Provider>
     </div>

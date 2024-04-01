@@ -113,17 +113,17 @@
 #big {
   width: 100px;
 }
-#disabled {  
-  background-color:red;
-} */
-
-.modal {
+ */
+ #disabled {  
+  background-color:rgb(155, 155, 155);  
+}
+/* .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo gris con transparencia */
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,7 +133,7 @@
   background-color: #fff;    
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease; /* Transición para el contenido */
+  transition: transform 0.3s ease; 
   color: #000;
 }
 
@@ -154,12 +154,12 @@
 .close {
   cursor: pointer;
   padding: 5px;
-  margin-left: auto; /* Para que el botón "X" aparezca a la derecha */
+  margin-left: auto;
 }
 
 .modal-title {
-  text-align: center; /* Para centrar el título */
-  flex-grow: 1; /* Para que el título ocupe el espacio restante */
+  text-align: center; 
+  flex-grow: 1; 
 }
 .modal button {
   background-color: #007bff;
@@ -176,7 +176,7 @@
 
 .share-buttons-container {
   display: flex;
-  justify-content: center; /* Alinea los botones horizontalmente */
+  justify-content: center; 
   align-items: center;
 }
 
@@ -184,17 +184,17 @@
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 10px; /* Ajusta el relleno para que el botón sea completamente redondo */
-  width: 40px; /* Establece el ancho del botón */
-  height: 40px; /* Establece la altura del botón */
-  border-radius: 50%; /* Hacer el botón redondo */
+  padding: 10px; 
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto; /* Centra horizontalmente el botón */
+  margin: 0 auto; 
 }
 
 .modal button.share-button:hover {
   background-color: #0056b3;
-}
+} */

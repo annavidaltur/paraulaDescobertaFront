@@ -40,18 +40,18 @@ function Keyboard() {
 
 
     return (
-        <div className="container" onKeyDown={handleKeyboard}>
-            <div className="line1 row justify-content-center">
+        <div className="container" onKeyDown={handleKeyboard} style={{maxWidth: '600px'}}>
+            <div className="row justify-content-center">
                 {keys1.map((key) => (
                     <Key keyVal={key} disabled={disabledLetters.includes(key)} />
                 ))}
             </div>
-            <div className="line2 row justify-content-center">
+            <div className="row justify-content-center">
                 {keys2.map((key) => {
                     return <Key keyVal={key} disabled={disabledLetters.includes(key)} />;
                 })}
             </div>
-            <div className="line3 row justify-content-center">
+            <div className="row justify-content-center">
                 <Key keyVal={"ENTER"} bigKey />
                 {keys3.map((key) => {
                     return <Key keyVal={key} disabled={disabledLetters.includes(key)} />;

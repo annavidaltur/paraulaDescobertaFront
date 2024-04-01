@@ -20,13 +20,12 @@ function Key({ keyVal, bigKey, disabled }) {
     return (
         <div 
             className="col m-1 p-1 key border rounded-pill cursor-pointer" 
-            id={bigKey ? "big" : disabled && "disabled"} 
-            onClick={selectLetter}
-            style={{
-                // height: "50px",
-            }}
+            id={disabled ? "disabled" : ""}             
+            onClick={selectLetter}            
             >                
-                {keyVal === "ENTER" ? <FontAwesomeIcon icon={faArrowRightToBracket} /> : keyVal === "DELETE" ? <FontAwesomeIcon icon={faBackspace} /> : keyVal}
+                {keyVal === "ENTER" ? <FontAwesomeIcon icon={faArrowRightToBracket} /> 
+                    : keyVal === "DELETE" ? <FontAwesomeIcon icon={faBackspace} /> 
+                        : keyVal}
         </div>
     )
 }
