@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { AppContext } from "../App";
 
 function Letter({ letterPos, attemptVal }) {
-    const { board, correctWordClean, currAttempt, setCurrAttempt, setDisabledLetters } = useContext(AppContext);
+    const { board, correctWordClean, currAttempt, setCurrAttempt, setDisabledLetters, gameOver } = useContext(AppContext);
     const letter = board[attemptVal][letterPos]; // La letra de la celda actual
 
     // Obtenemos el estado de la letra: correcta, exista pero no en esa posición, no existe
@@ -12,14 +12,14 @@ function Letter({ letterPos, attemptVal }) {
         (correct ? "correct" : almost ? "almost" : "error");
 
     // Para seleccionar la letra sobre el tablero
-    const isCurrentCell = currAttempt.attempt === attemptVal && currAttempt.letterPos === letterPos;
+    const isCurrentCell = !gameOver.gameOver && currAttempt.attempt === attemptVal && currAttempt.letterPos === letterPos;
     let cellClassName = "";
     if (isCurrentCell) {
         cellClassName = "current-cell";
     }
-    if (letterPos === 4 && letter !== "" && currAttempt.attempt === attemptVal) {
-        cellClassName = "current-cell";
-    }
+    // if (letterPos === 4 && letter !== "" && currAttempt.attempt === attemptVal) {
+    //     cellClassName = "current-cell";
+    // }
 
     useEffect(() => {
         // Deshabilitamos las letras del teclado que no sean correctas ni almost

@@ -28,7 +28,6 @@ function App() {
       setCorrectWordClean(result.todaysWordClean);
       console.log('paraula: ', result.todaysWord);
       console.log('paraula sense accents: ', result.todaysWordClean);
-      console.log('wordSet', result.wordSet);
     });
   }, [])
 
@@ -46,12 +45,28 @@ function App() {
   }
 
   const onDelete = () => {
-    if (currAttempt.letterPos === 0) // Si estamos en la pos=0 no hacemos nada
-      return;
     const newBoard = [...board] // Copiamos el tablero (board)
-    newBoard[currAttempt.attempt][currAttempt.letterPos - 1] = "" // Borramos la letra
-    setBoard(newBoard) // Actualizamos el tablero
-    setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 }) // Actualizamos el puntero para quitar una posición. La fila se mantiene
+
+    if (currAttempt.letterPos === 0) // Si estamos en la pos=0 no hacemos nada
+    {
+      newBoard[currAttempt.attempt][currAttempt.letterPos] = ""
+      setBoard(newBoard)
+      setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos})    
+    }
+    else if (currAttempt.letterPos < 5)
+    {
+      newBoard[currAttempt.attempt][currAttempt.letterPos ] = "" // Borramos la letra
+      console.log('letterPos>0 newBoard', newBoard);
+      setBoard(newBoard) // Actualizamos el tablero
+      setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 }) // Actualizamos el puntero para quitar una posición. La fila se mantiene      
+    }
+    else // currAttemps.letterPos === 5
+    {
+      newBoard[currAttempt.attempt][currAttempt.letterPos - 1] = "" // Borramos la letra
+      setBoard(newBoard) // Actualizamos el tablero
+      setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 }) // Actualizamos el puntero para quitar una posición. La fila se mantiene
+    } 
+    
   }
 
   const onEnter = () => {
