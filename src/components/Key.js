@@ -19,7 +19,8 @@ function Key({ keyVal, bigKey, disabled }) {
 
     return (
         <div 
-            className="col m-1 p-1 key border rounded-pill cursor-pointer" 
+            className="col p-1 key border rounded-pill cursor-pointer" 
+            style={{margin: "1px"}}
             id={disabled ? "disabled" : ""}             
             onClick={selectLetter}            
             >                

@@ -40,7 +40,7 @@ function Keyboard() {
 
 
     return (
-        <div className="container" onKeyDown={handleKeyboard} style={{maxWidth: '600px'}}>
+        <div className="container mt-5" onKeyDown={handleKeyboard} style={{maxWidth: '600px'}}>
             <div className="row justify-content-center">
                 {keys1.map((key) => (
                     <Key keyVal={key} disabled={disabledLetters.includes(key)} />

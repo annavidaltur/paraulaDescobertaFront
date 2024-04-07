@@ -40,27 +40,31 @@
   font-family: Arial, Helvetica, sans-serif;
 } */
 
+body{
+  font-family: 'Roboto', sans-serif !important;
+}
+
 .custom-border.current-cell {
-  background-color: #6cd5ff;
-  border: 2px solid #417CF2 !important;
+  background-color: #b9ebff;
+  border: 1px solid #417CF2 !important;
   color:#0056b3;
 }
 
 #correct {
   background-color: #70e068;
-  border: 2px solid #528d4e !important;
+  border: 1px solid #528d4e !important;
   color: #44643a;
 }
 
 #almost {
   background-color: #FFCC00;
-  border: 2px solid #8b7107 !important;
+  border: 1px solid #8b7107 !important;
   color: #7a640c;
 }
 
 #error {
   background-color: #cecbcb;
-  border: 2px solid #7a7a7a !important;
+  border: 1px solid #7a7a7a !important;
   color: #707070;
 }
 
