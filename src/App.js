@@ -70,12 +70,11 @@ function App() {
   }
 
   const onEnter = () => {
-    if (currAttempt.letterPos !== 5) // Solo validamos la palabra si ha escrito las 5 letras
-      return;
-
     // Obtenemos la palabra escrita en la fila actual
     let currWord = "";
     for (let i = 0; i < 5; i++) {
+      if(board[currAttempt.attempt][i] === "") // Si no están las 5 letras no hacemos nada
+        return;
       currWord += board[currAttempt.attempt][i];
     }
 
@@ -100,6 +99,18 @@ function App() {
     }
   }
 
+  const onMoveLeft = () => {
+    if (currAttempt.letterPos <= 5 && currAttempt.letterPos > 0) {
+      setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 })
+    }
+  }
+
+  const onMoveRight = () => {
+    if (currAttempt.letterPos < 4) {
+      setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos + 1 })
+    } 
+  }
+
   const openModal = () => {
     setModalOpen(true);
   };
@@ -110,13 +121,14 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="text-center">PARAULA DESCOBERTA</h1>
+      <h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>
 
       <AppContext.Provider
         value={{
           board, setBoard,
           currAttempt, setCurrAttempt,
           onSelectLetter, onEnter, onDelete,
+          onMoveRight, onMoveLeft,
           correctWord,
           correctWordClean,
           disabledLetters, setDisabledLetters,
