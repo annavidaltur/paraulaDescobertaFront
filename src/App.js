@@ -110,13 +110,8 @@ function App() {
 
   return (
     <div className="App">
-      <nav className="navbar navbar-dark bg-secondary">
-        <div className="container">
-          <h1 className="navbar-brand">WORDLE VAL</h1>
-        </div>
-      </nav>
+      <h1 className="text-center">PARAULA DESCOBERTA</h1>
 
-      
       <AppContext.Provider
         value={{
           board, setBoard,
@@ -128,27 +123,16 @@ function App() {
           gameOver, setGameOver,
           elapsedTime, setElapsedTime
         }}>
-        <div className="container">
-          <div className="row">
-            <div className='col text-center'>
-              <Timer />
-            </div>
-          </div>
+        <div className="container mt-5">
           <div className="row">
             <div className='col-12 text-center'>
               <Board />            
               <Keyboard />
             </div>
           </div>
-          {/* <button onClick={() => openModal()}>MODAL</button> */}
-          <GameOverModal isOpen={modalOpen} onClose={closeModal} />
-          {/* {gameOver.gameOver ?
-            <Modal isOpen={modalOpen} onClose={closeModal}>
-              <GameOver />
-            </Modal> : null
-          } */}
-          
         </div>
+        <GameOverModal isOpen={modalOpen} onClose={closeModal} />
+        <Timer />
       </AppContext.Provider>
     </div>
   );

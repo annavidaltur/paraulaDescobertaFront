@@ -25,7 +25,7 @@ const Timer = () => {
     const formatted = formatDate(elapsedTime)
 
     return (
-        <p>{formatted}</p>
+        ""
     );
 };
 
