@@ -76,7 +76,7 @@ const GameOverModal = ({ isOpen, onClose, children }) => {
         <Modal.Title>{gameOver.guessedWord ? "Enhorabona!" : "Has fallat"}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="text-center">
-        <h1>Paraula correcta: <a href={`https://avl.gva.es/lexicval/?paraula=${correctWord}`}>{correctWord}</a></h1>
+        <h1>Paraula correcta: <a href={`https://avl.gva.es/lexicval/?paraula=${correctWord}`} target="_blank">{correctWord}</a></h1>
         {gameOver.guessedWord && (<h3>Ho has endevinat en {currAttempt.attempt} {currAttempt.attempt === 1 ? 'intent' : 'intents'} i {formatted}</h3>)}
         <div className="mini-board">{miniBoardLines}</div>
       </Modal.Body>
