@@ -49,20 +49,20 @@ function Keyboard() {
         <div className="container mt-5" onKeyDown={handleKeyboard} style={{maxWidth: '600px'}}>
             <div className="row justify-content-center">
                 {keys1.map((key) => (
-                    <Key keyVal={key} disabled={disabledLetters.includes(key)} />
+                    <Key key={key} keyVal={key} disabled={disabledLetters.includes(key)} />
                 ))}
             </div>
             <div className="row justify-content-center">
                 {keys2.map((key) => {
-                    return <Key keyVal={key} disabled={disabledLetters.includes(key)} />;
+                    return <Key key={key} keyVal={key} disabled={disabledLetters.includes(key)} />;
                 })}
             </div>
             <div className="row justify-content-center">
-                <Key keyVal={"ENTER"} bigKey />
+                <Key key="ENTER" keyVal={"ENTER"} bigKey />
                 {keys3.map((key) => {
-                    return <Key keyVal={key} disabled={disabledLetters.includes(key)} />;
+                    return <Key key={key} keyVal={key} disabled={disabledLetters.includes(key)} />;
                 })}
-                <Key keyVal={"DELETE"} bigKey />
+                <Key key="DELETE" keyVal={"DELETE"} bigKey />
             </div>
         </div>
     )    
