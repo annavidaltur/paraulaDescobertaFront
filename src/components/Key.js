@@ -4,7 +4,7 @@ import { AppContext } from "../App";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightToBracket, faBackspace } from '@fortawesome/free-solid-svg-icons';
 
-function Key({ keyVal, bigKey, disabled }) {
+function Key({ keyVal, disabled }) {
     const { onSelectLetter, onEnter, onDelete } = useContext(AppContext);
 
     const selectLetter = () => {

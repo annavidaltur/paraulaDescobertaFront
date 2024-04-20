@@ -5,30 +5,26 @@ import React, { useState, createContext, useEffect } from "react";
 import { boardDefault, generateWordSet } from "./Words";
 import Timer from './components/Timer';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import GameOverModal from './components/Modal';
+import GameOverModal from './components/GameOverModal';
+import axios from 'axios';
+
 
 export const AppContext = createContext();
 
 function App() {
   const [board, setBoard] = useState(boardDefault); // Tablero
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 }); // Puntero fila,col
-  const [wordSet, setWordSet] = useState(undefined); // Batería de palabras
   const [disabledLetters, setDisabledLetters] = useState([]); // Letras deshabilitadas del teclado
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false })
-  const [correctWord, setCorrectWord] = useState("");
-  const [correctWordClean, setCorrectWordClean] = useState("");
   const [elapsedTime, setElapsedTime] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     // Cargamos la batería de palabras al iniciar la app
-    generateWordSet().then((result) => {
-      setWordSet(result.wordSet);
-      setCorrectWord(result.todaysWord);
-      setCorrectWordClean(result.todaysWordClean);
-      console.log('paraula: ', result.todaysWord);
-      console.log('paraula sense accents: ', result.todaysWordClean);
-    });
+    axios.get('http://localhost:5000/GetPalabraDiaria')
+    .then((response) => {      
+      console.log(response.data)     
+    })
   }, [])
 
   const onSelectLetter = (keyVal) => {
@@ -69,33 +65,45 @@ function App() {
     
   }
 
-  const onEnter = () => {
+  const onEnter = async () => {
     // Obtenemos la palabra escrita en la fila actual
-    let currWord = "";
+    let currWord = "";    
     for (let i = 0; i < 5; i++) {
       if(board[currAttempt.attempt][i] === "") // Si no están las 5 letras no hacemos nada
         return;
       currWord += board[currAttempt.attempt][i];
     }
 
-    // Comprobamos si la palabra introducida es una palabra real (que exista en la batería)
-    if (wordSet.some(item => item.withoutAccent === currWord.toLowerCase())) {
-      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 }) // Pasamos a la siguiente fila y reseteamos la posición a 0  
-    } else {
-      alert("No existeix la paraula")
-    }
+    
+    try {
+      // Realizamos una solicitud al backend para verificar si la palabra existe en la batería
+      const response = await axios.post('http://localhost:5000/CheckWord', { word: currWord });  
+      const data = response.data;      
+      console.log(response.data)
 
-    // Comprobamos si la palabra es la correcta
-    if (currWord === correctWordClean) {
-      setGameOver({ gameOver: true, guessedWord: true })
-      openModal();
-      return;
-    }
+      if (data.exists) {
+        setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 }) // Pasamos a la siguiente fila y reseteamos la posición a 0
+      } else {
+        alert("No existeix la paraula");
+      }
+            
+      // Comprobamos si la palabra es la correcta
+      if (data.isCorrect) {
+        setGameOver({ gameOver: true, guessedWord: true })
+        openModal();
+        return;
+      }
+      
+      // Deshabilitamos las letras del teclado que no sean correctas ni almost
+      setDisabledLetters((prev) => [...prev, ...data.disabledLetters])
 
-    // La palabra no es correcta y ha hcho 6 intentos
-    if (currAttempt.attempt === 5) {
-      setGameOver({ gameOver: true, guessedWord: false })
-      openModal();
+      // La palabra no es correcta y ha hecho 6 intentos
+      if (currAttempt.attempt === 5) {
+        setGameOver({ gameOver: true, guessedWord: false })
+        openModal();
+      }
+    } catch (error) {
+      console.error('Error al verificar la palabra:', error);
     }
   }
 
@@ -129,8 +137,6 @@ function App() {
           currAttempt, setCurrAttempt,
           onSelectLetter, onEnter, onDelete,
           onMoveRight, onMoveLeft,
-          correctWord,
-          correctWordClean,
           disabledLetters, setDisabledLetters,
           gameOver, setGameOver,
           elapsedTime, setElapsedTime
@@ -144,7 +150,7 @@ function App() {
           </div>
         </div>
         <GameOverModal isOpen={modalOpen} onClose={closeModal} />
-        <Timer />
+        {/* <Timer /> */}
       </AppContext.Provider>
     </div>
   );
