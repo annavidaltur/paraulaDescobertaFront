@@ -18,6 +18,7 @@ function App() {
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false })
   const [elapsedTime, setElapsedTime] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
 
   useEffect(() => {
     // Cargamos la batería de palabras al iniciar la app
@@ -97,6 +98,9 @@ function App() {
       // Deshabilitamos las letras del teclado que no sean correctas ni almost
       setDisabledLetters((prev) => [...prev, ...data.disabledLetters])
 
+      // Establecemos el estado de cada letra de la fila enviada
+      setRowState((prev) => [...prev, data.rowState]);
+
       // La palabra no es correcta y ha hecho 6 intentos
       if (currAttempt.attempt === 5) {
         setGameOver({ gameOver: true, guessedWord: false })
@@ -127,9 +131,10 @@ function App() {
     setModalOpen(false);
   };
 
+  console.log('rowState', rowState)
   return (
     <div className="App">
-      <h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>
+      {/*<h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>*/}
 
       <AppContext.Provider
         value={{
@@ -139,7 +144,8 @@ function App() {
           onMoveRight, onMoveLeft,
           disabledLetters, setDisabledLetters,
           gameOver, setGameOver,
-          elapsedTime, setElapsedTime
+          elapsedTime, setElapsedTime,
+          rowState
         }}>
         <div className="container mt-5">
           <div className="row">
