@@ -1,8 +1,8 @@
 import './App.css';
 import Board from './components/Board';
 import Keyboard from './components/Keyboard';
-import React, { useState, createContext, useEffect } from "react";
-import { boardDefault, generateWordSet } from "./Words";
+import React, { useState, createContext } from "react";
+import { boardDefault } from "./Words";
 import Timer from './components/Timer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GameOverModal from './components/GameOverModal';
@@ -19,15 +19,6 @@ function App() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
-  const [correctWord, setCorrectWord] = useState("");
-
-  useEffect(() => {
-    // Cargamos la batería de palabras al iniciar la app
-    axios.get('http://localhost:5000/GetPalabraDiaria')
-      .then((response) => {
-        console.log(response.data)
-      })
-  }, [])
 
   const onSelectLetter = (keyVal) => {
     if (!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
@@ -91,7 +82,6 @@ function App() {
         // Comprobamos si la palabra es la correcta
         if (data.isCorrect) {
           setGameOver({ gameOver: true, guessedWord: true })
-          setCorrectWord(data.correctWord);
           openModal();
           return;
         }
@@ -136,7 +126,7 @@ function App() {
 
   return (
     <div className="App">
-      {/*<h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>*/}
+      <h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>
 
       <AppContext.Provider
         value={{
@@ -147,8 +137,7 @@ function App() {
           disabledLetters, setDisabledLetters,
           gameOver, setGameOver,
           elapsedTime, setElapsedTime,
-          rowState,
-          correctWord
+          rowState
         }}>
         <div className="container mt-5">
           <div className="row">

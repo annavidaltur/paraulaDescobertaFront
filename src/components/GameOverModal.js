@@ -1,12 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { AppContext } from '../App';
 import { formatDate } from "../utils/utils";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import axios from 'axios';
 
 const GameOverModal = ({ isOpen, onClose }) => {
-  const { gameOver, currAttempt, elapsedTime, rowState, correctWord } = useContext(AppContext);
+  const { gameOver, currAttempt, elapsedTime, rowState } = useContext(AppContext);
+  const [correctWord, setCorrectWord] = React.useState('');
+  
+  useEffect(() => {
+    // Obtenemos la palabra diaria
+    axios.get('http://localhost:5000/GetPalabraDiaria')
+      .then((response) => {
+        setCorrectWord(response.data.correct)
+      })
+  }, [])
 
   if (!isOpen) return null;
 
