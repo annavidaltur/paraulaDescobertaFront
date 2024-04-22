@@ -19,13 +19,14 @@ function App() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
+  const [correctWord, setCorrectWord] = useState("");
 
   useEffect(() => {
     // Cargamos la batería de palabras al iniciar la app
     axios.get('http://localhost:5000/GetPalabraDiaria')
-    .then((response) => {      
-      console.log(response.data)     
-    })
+      .then((response) => {
+        console.log(response.data)
+      })
   }, [])
 
   const onSelectLetter = (keyVal) => {
@@ -48,11 +49,10 @@ function App() {
     {
       newBoard[currAttempt.attempt][currAttempt.letterPos] = ""
       setBoard(newBoard)
-      setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos})    
+      setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos })
     }
-    else if (currAttempt.letterPos < 5)
-    {
-      newBoard[currAttempt.attempt][currAttempt.letterPos ] = "" // Borramos la letra
+    else if (currAttempt.letterPos < 5) {
+      newBoard[currAttempt.attempt][currAttempt.letterPos] = "" // Borramos la letra
       console.log('letterPos>0 newBoard', newBoard);
       setBoard(newBoard) // Actualizamos el tablero
       setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 }) // Actualizamos el puntero para quitar una posición. La fila se mantiene      
@@ -62,50 +62,53 @@ function App() {
       newBoard[currAttempt.attempt][currAttempt.letterPos - 1] = "" // Borramos la letra
       setBoard(newBoard) // Actualizamos el tablero
       setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 }) // Actualizamos el puntero para quitar una posición. La fila se mantiene
-    } 
-    
+    }
+
   }
 
   const onEnter = async () => {
     // Obtenemos la palabra escrita en la fila actual
-    let currWord = "";    
+    let currWord = "";
     for (let i = 0; i < 5; i++) {
-      if(board[currAttempt.attempt][i] === "") // Si no están las 5 letras no hacemos nada
+      if (board[currAttempt.attempt][i] === "") // Si no están las 5 letras no hacemos nada
         return;
       currWord += board[currAttempt.attempt][i];
     }
 
-    
+
     try {
       // Realizamos una solicitud al backend para verificar si la palabra existe en la batería
-      const response = await axios.post('http://localhost:5000/CheckWord', { word: currWord });  
-      const data = response.data;      
+      const response = await axios.post('http://localhost:5000/CheckWord', { word: currWord });
+      const data = response.data;
       console.log(response.data)
 
       if (data.exists) {
         setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 }) // Pasamos a la siguiente fila y reseteamos la posición a 0
+
+        // Establecemos el estado de cada letra de la fila enviada
+        setRowState((prev) => [...prev, data.rowState]);
+
+        // Comprobamos si la palabra es la correcta
+        if (data.isCorrect) {
+          setGameOver({ gameOver: true, guessedWord: true })
+          setCorrectWord(data.correctWord);
+          openModal();
+          return;
+        }
+
+        // Deshabilitamos las letras del teclado que no sean correctas ni almost
+        setDisabledLetters((prev) => [...prev, ...data.disabledLetters])
+
+        // La palabra no es correcta y ha hecho 6 intentos
+        if (currAttempt.attempt === 5) {
+          setGameOver({ gameOver: true, guessedWord: false })
+          openModal();
+        }
       } else {
         alert("No existeix la paraula");
       }
-            
-      // Comprobamos si la palabra es la correcta
-      if (data.isCorrect) {
-        setGameOver({ gameOver: true, guessedWord: true })
-        openModal();
-        return;
-      }
-      
-      // Deshabilitamos las letras del teclado que no sean correctas ni almost
-      setDisabledLetters((prev) => [...prev, ...data.disabledLetters])
 
-      // Establecemos el estado de cada letra de la fila enviada
-      setRowState((prev) => [...prev, data.rowState]);
 
-      // La palabra no es correcta y ha hecho 6 intentos
-      if (currAttempt.attempt === 5) {
-        setGameOver({ gameOver: true, guessedWord: false })
-        openModal();
-      }
     } catch (error) {
       console.error('Error al verificar la palabra:', error);
     }
@@ -120,7 +123,7 @@ function App() {
   const onMoveRight = () => {
     if (currAttempt.letterPos < 4) {
       setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos + 1 })
-    } 
+    }
   }
 
   const openModal = () => {
@@ -131,7 +134,6 @@ function App() {
     setModalOpen(false);
   };
 
-  console.log('rowState', rowState)
   return (
     <div className="App">
       {/*<h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>*/}
@@ -145,12 +147,13 @@ function App() {
           disabledLetters, setDisabledLetters,
           gameOver, setGameOver,
           elapsedTime, setElapsedTime,
-          rowState
+          rowState,
+          correctWord
         }}>
         <div className="container mt-5">
           <div className="row">
             <div className='col-12 text-center'>
-              <Board />            
+              <Board />
               <Keyboard />
             </div>
           </div>

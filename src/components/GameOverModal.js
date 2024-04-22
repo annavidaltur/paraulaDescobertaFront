@@ -5,8 +5,8 @@ import { formatDate } from "../utils/utils";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
-const GameOverModal = ({ isOpen, onClose, children }) => {
-  const { gameOver, correctWord, correctWordClean, currAttempt, elapsedTime, board } = useContext(AppContext);
+const GameOverModal = ({ isOpen, onClose }) => {
+  const { gameOver, currAttempt, elapsedTime, rowState, correctWord } = useContext(AppContext);
 
   if (!isOpen) return null;
 
@@ -14,26 +14,19 @@ const GameOverModal = ({ isOpen, onClose, children }) => {
   const generateMiniBoard = () => {
     let miniBoardText = "";
 
-    for (let rowIndex = currAttempt.attempt - 1; rowIndex >= 0; rowIndex--) {
-      const row = board[rowIndex];
+    rowState.forEach(row => {
       let rowText = "";
-
-      for (let colIndex = 0; colIndex < row.length; colIndex++) {
-        const letter = row[colIndex];
-        const isCorrect = letter === correctWordClean[colIndex];
-        const isAlmost = !isCorrect && correctWordClean.includes(letter);
-
-        if (isCorrect)
+      row.forEach(state => { 
+        if(state === "correct")
           rowText += '🟢';
-        else if (isAlmost)
+        else if (state === "almost")
           rowText += '🟡';
         else
           rowText += '⚫';
-      }
-
-      miniBoardText = miniBoardText + rowText + '\n';
-    }
-
+       })      
+       miniBoardText = rowText + '\n' + miniBoardText;
+    });
+    console.log('miniBoardText', miniBoardText)
     return miniBoardText;
   };
 
