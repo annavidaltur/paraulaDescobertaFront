@@ -6,13 +6,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
 
+const urlBack = process.env.URL_BACK;
+
 const GameOverModal = ({ isOpen, onClose }) => {
   const { gameOver, currAttempt, elapsedTime, rowState } = useContext(AppContext);
   const [correctWord, setCorrectWord] = React.useState('');
   
   useEffect(() => {
     // Obtenemos la palabra diaria
-    axios.get('http://localhost:5000/GetPalabraDiaria')
+    axios.get(urlBack + '/GetPalabraDiaria')
       .then((response) => {
         setCorrectWord(response.data.correct)
       })
@@ -36,7 +38,6 @@ const GameOverModal = ({ isOpen, onClose }) => {
        })      
        miniBoardText = rowText + '\n' + miniBoardText;
     });
-    console.log('miniBoardText', miniBoardText)
     return miniBoardText;
   };
 

@@ -3,12 +3,11 @@ import Board from './components/Board';
 import Keyboard from './components/Keyboard';
 import React, { useState, createContext } from "react";
 import { boardDefault } from "./Words";
-import Timer from './components/Timer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GameOverModal from './components/GameOverModal';
 import axios from 'axios';
 
-
+const urlBack = process.env.URL_BACK;
 export const AppContext = createContext();
 
 function App() {
@@ -44,7 +43,6 @@ function App() {
     }
     else if (currAttempt.letterPos < 5) {
       newBoard[currAttempt.attempt][currAttempt.letterPos] = "" // Borramos la letra
-      console.log('letterPos>0 newBoard', newBoard);
       setBoard(newBoard) // Actualizamos el tablero
       setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 }) // Actualizamos el puntero para quitar una posición. La fila se mantiene      
     }
@@ -69,9 +67,8 @@ function App() {
 
     try {
       // Realizamos una solicitud al backend para verificar si la palabra existe en la batería
-      const response = await axios.post('http://localhost:5000/CheckWord', { word: currWord });
+      const response = await axios.post(urlBack + '/CheckWord', { word: currWord });
       const data = response.data;
-      console.log(response.data)
 
       if (data.exists) {
         setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 }) // Pasamos a la siguiente fila y reseteamos la posición a 0
