@@ -7,8 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import GameOverModal from './components/GameOverModal';
 import axios from 'axios';
 
-//const urlBack = process.env.URL_BACK;
-const urlBack = "https://paraula-descoberta-back.vercel.app"
+const urlBack = process.env.REACT_APP_URL_BACK;
+
 export const AppContext = createContext();
 
 function App() {
