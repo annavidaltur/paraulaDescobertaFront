@@ -21,15 +21,6 @@ function App() {
   const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
   const [correctWord, setCorrectWord] = useState('');
 
-  useEffect(() => {
-    // Obtenemos la palabra diaria
-    axios.get(urlBack + '/GetPalabraDiaria')
-      .then((response) => {
-        setCorrectWord(response.data.correct)
-        console.log(response.data)
-      })
-  }, [])
-
   const onSelectLetter = (keyVal) => {
     if (!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
     {
@@ -135,7 +126,7 @@ function App() {
   return (
     <div className="App">
       <h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>
-<p>paraula: {correctWord}</p>
+
       <AppContext.Provider
         value={{
           board, setBoard,
