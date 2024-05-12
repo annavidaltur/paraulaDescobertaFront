@@ -6,19 +6,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
 
-const urlBack = process.env.URL_BACK;
+const urlBack = process.env.REACT_APP_URL_BACK;
 
 const GameOverModal = ({ isOpen, onClose }) => {
   const { gameOver, currAttempt, elapsedTime, rowState } = useContext(AppContext);
   const [correctWord, setCorrectWord] = React.useState('');
-  
+
   useEffect(() => {
     // Obtenemos la palabra diaria
-    axios.get(urlBack + '/GetPalabraDiaria')
-      .then((response) => {
-        setCorrectWord(response.data.correct)
-      })
-  }, [])
+    if (gameOver.gameOver) {
+      axios.get(urlBack + '/GetPalabraDiaria')
+        .then((response) => {
+          setCorrectWord(response.data.correct)
+          console.log(response.data.correct)
+        })
+    }
+
+  }, [gameOver])
 
   if (!isOpen) return null;
 
@@ -28,15 +32,15 @@ const GameOverModal = ({ isOpen, onClose }) => {
 
     rowState.forEach(row => {
       let rowText = "";
-      row.forEach(state => { 
-        if(state === "correct")
+      row.forEach(state => {
+        if (state === "correct")
           rowText += '🟢';
         else if (state === "almost")
           rowText += '🟡';
         else
           rowText += '⚫';
-       })      
-       miniBoardText = rowText + '\n' + miniBoardText;
+      })
+      miniBoardText = rowText + '\n' + miniBoardText;
     });
     return miniBoardText;
   };
