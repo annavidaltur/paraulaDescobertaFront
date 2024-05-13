@@ -1,11 +1,15 @@
 import './App.css';
 import Board from './components/Board';
 import Keyboard from './components/Keyboard';
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext } from "react";
 import { boardDefault } from "./Words";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import GameOverModal from './components/GameOverModal';
+import GameOverModal from './components/modals/GameOver/GameOverModal';
 import axios from 'axios';
+import UserStatsModal from './components/modals/UserStats/UserStatsModal';
+import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartSimple } from '@fortawesome/free-solid-svg-icons';
 
 const urlBack = process.env.REACT_APP_URL_BACK;
 
@@ -17,9 +21,9 @@ function App() {
   const [disabledLetters, setDisabledLetters] = useState([]); // Letras deshabilitadas del teclado
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false })
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalGameOverOpen, setModalGameOverOpen] = useState(false);
   const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
-  const [correctWord, setCorrectWord] = useState('');
+  const [modalUserStatsOpen, setModalUserStatsOpen] = useState(true);
 
   const onSelectLetter = (keyVal) => {
     if (!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
@@ -81,7 +85,7 @@ function App() {
         // Comprobamos si la palabra es la correcta
         if (data.isCorrect) {
           setGameOver({ gameOver: true, guessedWord: true })
-          openModal();
+          openModalGameOver();
           return;
         }
 
@@ -91,7 +95,7 @@ function App() {
         // La palabra no es correcta y ha hecho 6 intentos
         if (currAttempt.attempt === 5) {
           setGameOver({ gameOver: true, guessedWord: false })
-          openModal();
+          openModalGameOver();
         }
       } else {
         alert("No existeix la paraula");
@@ -115,17 +119,27 @@ function App() {
     }
   }
 
-  const openModal = () => {
-    setModalOpen(true);
+  const openModalGameOver = () => {
+    setModalGameOverOpen(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const closeModalGameOver = () => {
+    setModalGameOverOpen(false);
+  };
+
+  const openModalUserStats = () => {
+    setModalUserStatsOpen(true);
+  };
+
+  const closeModalUserStats = () => {
+    setModalUserStatsOpen(false);
   };
 
   return (
     <div className="App">
       <h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>
+      
+      <Button variant="primary" onClick={openModalUserStats}><FontAwesomeIcon icon={faChartSimple} /></Button>
 
       <AppContext.Provider
         value={{
@@ -146,7 +160,8 @@ function App() {
             </div>
           </div>
         </div>
-        <GameOverModal isOpen={modalOpen} onClose={closeModal} />
+        <GameOverModal isOpen={modalGameOverOpen} onClose={closeModalGameOver} />
+        <UserStatsModal isOpen={modalUserStatsOpen} onClose={closeModalUserStats} />
         {/* <Timer /> */}
       </AppContext.Provider>
     </div>
