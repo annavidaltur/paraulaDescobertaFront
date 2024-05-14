@@ -21,9 +21,9 @@ function App() {
   const [disabledLetters, setDisabledLetters] = useState([]); // Letras deshabilitadas del teclado
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false })
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [modalGameOverOpen, setModalGameOverOpen] = useState(false);
+  const [modalGameOverOpen, setModalGameOverOpen] = useState(false); // Modal fi de joc
   const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
-  const [modalUserStatsOpen, setModalUserStatsOpen] = useState(true);
+  const [modalUserStatsOpen, setModalUserStatsOpen] = useState(false); // Modal estadístiques
 
   const onSelectLetter = (keyVal) => {
     if (!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
@@ -137,9 +137,12 @@ function App() {
 
   return (
     <div className="App">
-      <h3 className="text-center mt-3">PARAULA DESCOBERTA</h3>
+      <h3 className="text-center mt-3">
+        PARAULA DESCOBERTA 
+        <Button variant="outline-success" onClick={openModalUserStats}><FontAwesomeIcon icon={faChartSimple} /></Button>
+      </h3>
       
-      <Button variant="primary" onClick={openModalUserStats}><FontAwesomeIcon icon={faChartSimple} /></Button>
+      
 
       <AppContext.Provider
         value={{

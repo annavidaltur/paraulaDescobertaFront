@@ -24,17 +24,32 @@ export const options = {
     },
   },
   responsive: true,
+  scales: {
+    x: {
+      min: 0,
+      max: 100,
+    },
+  },
   plugins: {
     legend: {
       display: false
     },
     title: {
       display: false
+    },
+    tooltip: {
+      callbacks: {
+        label: function(context) {          
+          let label = context.dataset.label || '';
+          label += context.raw + '%';
+          return label;
+        }
+      }
     }
   },
 };
 
-const labels = ['6', '5', '4', '3', '2', '1'];
+const labels = ['#6','#5','#4','#3','#2','#1'];
 
 const AttemptsChart = ({stats}) => {
   if (!stats) {
@@ -46,7 +61,14 @@ const AttemptsChart = ({stats}) => {
     labels,
     datasets: [
       {        
-        data: [stats.attempts6*100/stats.nGuessed,stats.attempts5*100/stats.nGuessed,stats.attempts4*100/stats.nGuessed,stats.attempts3*100/stats.nGuessed,stats.attempts2*100/stats.nGuessed,stats.attempts1*100/stats.nGuessed],
+        data: [
+          (stats.attempts6*100/stats.nGuessed).toFixed(2),
+          (stats.attempts5*100/stats.nGuessed).toFixed(2),
+          (stats.attempts4*100/stats.nGuessed).toFixed(2),
+          (stats.attempts3*100/stats.nGuessed).toFixed(2),
+          (stats.attempts2*100/stats.nGuessed).toFixed(2),
+          (stats.attempts1*100/stats.nGuessed).toFixed(2)
+        ],
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       }
