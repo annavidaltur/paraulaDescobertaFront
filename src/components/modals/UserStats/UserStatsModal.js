@@ -7,17 +7,26 @@ const urlBack = process.env.REACT_APP_URL_BACK;
 
 const UserStatsModal = ({ isOpen, onClose }) => {
   const [stats, setStats] = useState();
-  const userId = 1;
   
   useEffect(() => {
-    axios.get(`${urlBack}/GetUserStats?userId=${userId}`)
+    axios.get(`${urlBack}/GetUserStats`, {withCredentials: true })
       .then((response) => {
-        setStats(response.data)
-        console.log(response.data)
+        setStats(response.data) 
+        console.log("stats", response.data)       
       })
   }, [])
 
   if (!isOpen || !stats ) return null;
+
+  const bestAttempt = Object.keys(stats).reduce(
+    (best, key) => {
+      if (stats[key] > best.value) {
+        return { value: stats[key], label: key };
+      }
+      return best;
+    },
+    { value: -Infinity, label: '' }
+  );
 
   return (
     <CustomModal
@@ -39,13 +48,13 @@ const UserStatsModal = ({ isOpen, onClose }) => {
           </div>
           <div className="row">
             <div className='col-4'>
-              Ratxa actual
+              Ratxa actual<br/>{stats.currentStreak}
             </div>
             <div className='col-4'>
-              Millor ratxa
+              Millor ratxa<br/>{stats.bestStreak}
             </div>
             <div className='col-4'>
-              Millor intent
+              Millor intent<br/>{bestAttempt.value}
             </div>
           </div>
         </div>

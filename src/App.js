@@ -1,7 +1,7 @@
 import './App.css';
 import Board from './components/Board';
 import Keyboard from './components/Keyboard';
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import { boardDefault } from "./Words";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GameOverModal from './components/modals/GameOver/GameOverModal';
@@ -24,6 +24,32 @@ function App() {
   const [modalGameOverOpen, setModalGameOverOpen] = useState(false); // Modal fi de joc
   const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
   const [modalUserStatsOpen, setModalUserStatsOpen] = useState(false); // Modal estadístiques
+
+  useEffect(() => {
+    const updateCookie = async () => {
+      try {
+        const response = await fetch(`${urlBack}/UpdateCookie`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update cookie');
+        }
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error('Error updating cookie:', error);
+      }
+    };
+
+    updateCookie();
+  }, []);
+
 
   const onSelectLetter = (keyVal) => {
     if (!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
@@ -73,7 +99,7 @@ function App() {
 
     try {
       // Realizamos una solicitud al backend para verificar si la palabra existe en la batería
-      const response = await axios.post(urlBack + '/CheckWord', { word: currWord });
+      const response = await axios.post(urlBack + '/CheckWord', { word: currWord, attempt: currAttempt.attempt + 1 }, {withCredentials: true });
       const data = response.data;
 
       if (data.exists) {
@@ -138,11 +164,9 @@ function App() {
   return (
     <div className="App">
       <h3 className="text-center mt-3">
-        PARAULA DESCOBERTA 
+        PARAULA DESCOBERTA
         <Button variant="outline-success" onClick={openModalUserStats}><FontAwesomeIcon icon={faChartSimple} /></Button>
       </h3>
-      
-      
 
       <AppContext.Provider
         value={{
