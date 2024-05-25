@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { AppContext } from '../App';
-import { formatDate } from "../utils/utils";
+import { Button } from 'react-bootstrap';
+import { AppContext } from '../../../App';
+import { formatDate } from "../../../utils/utils";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
+import CustomModal from '../CustomModal';
 
 const urlBack = process.env.REACT_APP_URL_BACK;
 
@@ -15,7 +16,7 @@ const GameOverModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     // Obtenemos la palabra diaria
     if (gameOver.gameOver) {
-      axios.get(urlBack + '/GetPalabraDiaria')
+      axios.get(urlBack + '/GetParaulaDiaria')
         .then((response) => {
           setCorrectWord(response.data.correct)
           console.log(response.data.correct)
@@ -78,31 +79,35 @@ const GameOverModal = ({ isOpen, onClose }) => {
   const miniBoardLines = generateMiniBoard().split('\n').map((line, index) => (
     <div key={index}>{line}</div>
   ));
-  return (
-    <Modal show={isOpen} onHide={onClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>{gameOver.guessedWord ? "Enhorabona!" : "Has fallat"}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="text-center">
-        <h1>Paraula correcta: <a href={`https://avl.gva.es/lexicval/?paraula=${correctWord}`} target="_blank">{correctWord}</a></h1>
-        {gameOver.guessedWord && (<h3>Ho has endevinat en {currAttempt.attempt} {currAttempt.attempt === 1 ? 'intent' : 'intents'} i {formatted}</h3>)}
-        <div className="mini-board">{miniBoardLines}</div>
-      </Modal.Body>
-      <Modal.Footer className="text-center">
-        <div className='container'>
-          <div className='row'>
-            <p>Comparteix el teu resultat!</p>
-          </div>
-          <div className='row'>
-            <div className='col'>
-              <Button className='rounded-circle m-1' onClick={shareOnTwitter}><FontAwesomeIcon icon={faTwitter} /></Button>
-              <Button className='rounded-circle m-1' onClick={shareOnFacebook}><FontAwesomeIcon icon={faFacebook} /></Button>
-              <Button className='rounded-circle m-1' onClick={shareOnWhatsApp}><FontAwesomeIcon icon={faWhatsapp} /></Button>
-            </div>
-          </div>
+
+  const footer = (
+    <div className='container'>
+      <div className='row'>
+        <p>Comparteix el teu resultat!</p>
+      </div>
+      <div className='row'>
+        <div className='col'>
+          <Button className='rounded-circle m-1' onClick={shareOnTwitter}><FontAwesomeIcon icon={faTwitter} /></Button>
+          <Button className='rounded-circle m-1' onClick={shareOnFacebook}><FontAwesomeIcon icon={faFacebook} /></Button>
+          <Button className='rounded-circle m-1' onClick={shareOnWhatsApp}><FontAwesomeIcon icon={faWhatsapp} /></Button>
         </div>
-      </Modal.Footer>
-    </Modal>
+      </div>
+    </div>
+  );
+  return (
+    <CustomModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={gameOver.guessedWord ? 'Enhorabona!' : 'Has fallat'}
+      body={
+        <>
+          <h1>Paraula correcta: <a href={`https://avl.gva.es/lexicval/?paraula=${correctWord}`} target="_blank">{correctWord}</a></h1>
+          {gameOver.guessedWord && (<h3>Ho has endevinat en {currAttempt.attempt} {currAttempt.attempt === 1 ? 'intent' : 'intents'} i {formatted}</h3>)}
+          <div className="mini-board">{miniBoardLines}</div>
+        </>
+      }
+      footer={footer}
+    />
   );
 };
 
