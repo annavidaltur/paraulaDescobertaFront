@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import CustomModal from '../CustomModal';
 import axios from 'axios';
 import AttemptsChart from './AttemptsChart';
+import { AppContext } from '../../../App';
 
 const urlBack = process.env.REACT_APP_URL_BACK;
 
 const UserStatsModal = ({ isOpen, onClose }) => {
+  const {gameOver} = useContext(AppContext);
   const [stats, setStats] = useState();
   
   useEffect(() => {
@@ -14,7 +16,7 @@ const UserStatsModal = ({ isOpen, onClose }) => {
         setStats(response.data) 
         console.log("stats", response.data)       
       })
-  }, [])
+  }, [gameOver.gameOver])
 
   if (!isOpen || !stats ) return null;
 
@@ -43,7 +45,7 @@ const UserStatsModal = ({ isOpen, onClose }) => {
             </div>
             <div className='col-6'>
               % victòries<br/>
-              {(stats.nGuessed*100/stats.nPlayed).toFixed(2)}%
+              {stats.nGuessed > 0 ? (stats.nGuessed*100/stats.nPlayed).toFixed(2) : 0}%
             </div>
           </div>
           <div className="row">
