@@ -16,19 +16,9 @@ const UserStatsModal = ({ isOpen, onClose }) => {
         setStats(response.data) 
         console.log("stats", response.data)       
       })
-  }, [gameOver.gameOver])
+  }, [isOpen])
 
   if (!isOpen || !stats ) return null;
-
-  const bestAttempt = Object.keys(stats).reduce(
-    (best, key) => {
-      if (stats[key] > best.value) {
-        return { value: stats[key], label: key };
-      }
-      return best;
-    },
-    { value: -Infinity, label: '' }
-  );
 
   return (
     <CustomModal
@@ -56,7 +46,7 @@ const UserStatsModal = ({ isOpen, onClose }) => {
               Millor ratxa<br/>{stats.bestStreak}
             </div>
             <div className='col-4'>
-              Millor intent<br/>{bestAttempt.value}
+              Millor intent<br/>{stats.bestTry}
             </div>
           </div>
         </div>
