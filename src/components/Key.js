@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightToBracket, faBackspace } from '@fortawesome/free-solid-svg-icons';
 
 function Key({ keyVal, disabled }) {
-    const { onSelectLetter, onEnter, onDelete } = useContext(AppContext);
+    const { onSelectLetter, onEnter, onDelete, playedToday } = useContext(AppContext);
 
     const selectLetter = () => {
         if (keyVal === "ENTER") {
@@ -19,10 +19,10 @@ function Key({ keyVal, disabled }) {
 
     return (
         <div 
-            className="col p-1 key border rounded-pill cursor-pointer" 
+            className={`col p-1 key border rounded-pill ${playedToday ? '' : 'cursor-pointer'}`}
             style={{margin: "1px"}}
             id={disabled ? "disabled" : ""}             
-            onClick={selectLetter}            
+            onClick={!playedToday ? selectLetter : undefined}            
             >                
                 {keyVal === "ENTER" ? <FontAwesomeIcon icon={faArrowRightToBracket} /> 
                     : keyVal === "DELETE" ? <FontAwesomeIcon icon={faBackspace} /> 

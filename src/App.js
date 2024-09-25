@@ -24,6 +24,7 @@ function App() {
   const [modalGameOverOpen, setModalGameOverOpen] = useState(false); // Modal fi de joc
   const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
   const [modalUserStatsOpen, setModalUserStatsOpen] = useState(false); // Modal estadístiques
+  const [playedToday, setPlayedToday] = useState(false); 
 
   useEffect(() => {
     const updateCookie = async () => {
@@ -41,7 +42,10 @@ function App() {
         }
 
         const data = await response.json();
-        console.log(data);
+        if(data.playedToday)
+          setPlayedToday(true);
+
+        console.log('cookie',data);
       } catch (error) {
         console.error('Error updating cookie:', error);
       }
@@ -52,7 +56,7 @@ function App() {
 
 
   const onSelectLetter = (keyVal) => {
-    if (!gameOver.gameOver) // Si ha acabado el juego no permitimos escribir
+    if (!gameOver.gameOver && !playedToday) // Si ha acabado el juego no permitimos escribir
     {
       if (currAttempt.letterPos > 4) // Si ha escrito las 5 letras de la fila no hacemos nada
         return;
@@ -177,7 +181,8 @@ function App() {
           disabledLetters, setDisabledLetters,
           gameOver, setGameOver,
           elapsedTime, setElapsedTime,
-          rowState
+          rowState,
+          playedToday
         }}>
         <div className="container mt-5">
           <div className="row">
