@@ -1,0 +1,35 @@
+body{
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.custom-border.current-cell {
+  background-color: #b9ebff;
+  border: 1px solid #417CF2 !important;
+  color:#0056b3;
+}
+
+#correct {
+  background-color: #70e068;
+  border: 1px solid #528d4e !important;
+  color: #44643a;
+}
+
+#almost {
+  background-color: #FFCC00;
+  border: 1px solid #8b7107 !important;
+  color: #7a640c;
+}
+
+#error {
+  background-color: #cecbcb;
+  border: 1px solid #7a7a7a !important;
+  color: #707070;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+#disabled {  
+  background-color:rgb(155, 155, 155);  
+}
