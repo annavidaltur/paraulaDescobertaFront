@@ -168,9 +168,12 @@ function App() {
     <div className="App">
       <h3 className="text-center mt-3">
         PARAULA DESCOBERTA
-        <Button variant="outline-success" onClick={openModalUserStats}><FontAwesomeIcon icon={faChartSimple} /></Button>
+        
       </h3>
-
+      <div className='text-center'>
+        <Button variant="outline-success" onClick={openModalUserStats}><FontAwesomeIcon icon={faChartSimple} /></Button>
+      </div>
+      
       <AppContext.Provider
         value={{
           board, setBoard,
