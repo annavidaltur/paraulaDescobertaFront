@@ -49,7 +49,7 @@ const GameOverModal = ({ isOpen, onClose }) => {
   const shareOnTwitter = () => {
     let text = "";
     if (gameOver.guessedWord)
-      text = `Acabe de resoldre la paraula secreta d'@encreuada en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;
+      text = `Acabe de resoldre la paraula descoberta en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;
     else text = `He fallat després de ${currAttempt.attempt} intents en ${formatted}. Intenta-ho tu també!\n${generateMiniBoard()}`;
 
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
@@ -59,7 +59,7 @@ const GameOverModal = ({ isOpen, onClose }) => {
   const shareOnFacebook = () => {
     let text = "";
     if (gameOver.guessedWord)
-      text = `Acabe de resoldre la paraula secreta d'@encreuada en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;
+      text = `Acabe de resoldre la paraula descoberta en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;
     else text = `He fallat després de ${currAttempt.attempt} intents en ${formatted}. Intenta-ho tu també!\n${generateMiniBoard()}`;
 
     const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(text)}`;
@@ -69,7 +69,7 @@ const GameOverModal = ({ isOpen, onClose }) => {
   const shareOnWhatsApp = () => {
     let text = "";
     if (gameOver.guessedWord)
-      text = `Acabe de resoldre la paraula secreta d'@encreuada en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;
+      text = `Acabe de resoldre la paraula descoberta en ${currAttempt.attempt} intents en ${formatted}! Prova'l tu també!\n${generateMiniBoard()}`;
     else text = `He fallat després de ${currAttempt.attempt} intents en ${formatted}. Intenta-ho tu també!\n${generateMiniBoard()}`;
 
     const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
@@ -101,7 +101,7 @@ const GameOverModal = ({ isOpen, onClose }) => {
       title={gameOver.guessedWord ? 'Enhorabona!' : 'Has fallat'}
       body={
         <>
-          <h1>Paraula correcta: <a href={`https://avl.gva.es/lexicval/?paraula=${correctWord}`} target="_blank">{correctWord}</a></h1>
+          <h2>Paraula correcta: <a href={`https://avl.gva.es/lexicval/?paraula=${correctWord}`} target="_blank">{correctWord}</a></h2>
           {gameOver.guessedWord && (<h3>Ho has endevinat en {currAttempt.attempt} {currAttempt.attempt === 1 ? 'intent' : 'intents'} i {formatted}</h3>)}
           <div className="mini-board">{miniBoardLines}</div>
         </>

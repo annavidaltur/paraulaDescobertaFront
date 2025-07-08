@@ -1,14 +1,14 @@
 import './App.css';
 import Board from './components/Board';
 import Keyboard from './components/Keyboard';
-import React, { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect } from "react";
 import { boardDefault } from "./assets/Words";
 import GameOverModal from './components/modals/GameOver/GameOverModal';
 import axios from 'axios';
 import UserStatsModal from './components/modals/UserStats/UserStatsModal';
-import { Button,Container, Row, Col } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartSimple } from '@fortawesome/free-solid-svg-icons';
+import { Container, Row, Col } from 'react-bootstrap';
+import Header from './components/Header';
+import LegendModal from './components/modals/Legend/LegenModal';
 
 const urlBack = import.meta.env.VITE_URL_BACK;
 
@@ -24,6 +24,7 @@ function App() {
   const [rowState, setRowState] = useState([]); // Indica estado de cada letra de la fila
   const [modalUserStatsOpen, setModalUserStatsOpen] = useState(false); // Modal estadístiques
   const [playedToday, setPlayedToday] = useState(false); 
+  const [modalLegendOpen, setModalLegendOpen] = useState(false); // Modal llegenda
 
   useEffect(() => {
     const updateCookie = async () => {
@@ -164,15 +165,18 @@ function App() {
     setModalUserStatsOpen(false);
   };
 
+  const openModalLegend = () => {
+    setModalLegendOpen(true);
+  };
+
+  const closeModalLegend = () => {
+    setModalLegendOpen(false);
+  };
+
   return (
     <div className="App">
-      <h3 className="text-center mt-3">
-        PARAULA DESCOBERTA
-        
-      </h3>
-      <div className='text-center'>
-        <Button variant="outline-success" onClick={openModalUserStats}><FontAwesomeIcon icon={faChartSimple} /></Button>
-      </div>
+      
+      <Header openModalUserStats={openModalUserStats} openModalLegend={openModalLegend}/>
       
       <AppContext.Provider
         value={{
@@ -195,6 +199,7 @@ function App() {
       </Row>
     </Container>
 
+    <LegendModal isOpen={modalLegendOpen} onClose={closeModalLegend} />
     <GameOverModal isOpen={modalGameOverOpen} onClose={closeModalGameOver} />
     <UserStatsModal isOpen={modalUserStatsOpen} onClose={closeModalUserStats} />
         {/* <Timer /> */}
