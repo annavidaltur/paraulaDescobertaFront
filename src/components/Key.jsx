@@ -4,7 +4,7 @@ import { AppContext } from "../App";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightToBracket, faBackspace } from '@fortawesome/free-solid-svg-icons';
 
-function Key({ keyVal, disabled }) {
+function Key({ keyVal, disabled, bigKey = false }) {
     const { onSelectLetter, onEnter, onDelete, playedToday } = useContext(AppContext);
 
     const selectLetter = () => {
@@ -19,8 +19,12 @@ function Key({ keyVal, disabled }) {
 
     return (
         <div 
-            className={`col p-1 key border rounded-pill ${playedToday ? '' : 'cursor-pointer'}`}
-            style={{margin: "1px"}}
+            className={`key border rounded bg-light fw-bold text-center d-flex align-items-center justify-content-center text-uppercase ${playedToday ? '' : 'cursor-pointer'}`}            
+            style={{
+                padding: '0.75rem',
+                width: bigKey ? '62px' : '40px',
+                minWidth: bigKey ? '52px' : '30px',
+                margin: "2px"}}
             id={disabled ? "disabled" : ""}             
             onClick={!playedToday ? selectLetter : undefined}            
             >                

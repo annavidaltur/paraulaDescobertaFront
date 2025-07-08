@@ -47,17 +47,17 @@ function Keyboard() {
     console.log('playedToday', playedToday)
     return (
         <div className="container mt-5" onKeyDown={handleKeyboard} style={{maxWidth: '600px'}}>
-            <div className="row justify-content-center">
+            <div className="d-flex justify-content-center flex-nowrap">
                 {keys1.map((key) => (
                     <Key key={key} keyVal={key} disabled={disabledLetters.includes(key) || playedToday} />
                 ))}
             </div>
-            <div className="row justify-content-center">
+            <div className="d-flex justify-content-center flex-nowrap">
                 {keys2.map((key) => {
                     return <Key key={key} keyVal={key} disabled={disabledLetters.includes(key) || playedToday} />;
                 })}
             </div>
-            <div className="row justify-content-center">
+            <div className="d-flex justify-content-center flex-nowrap">
                 <Key key="ENTER" keyVal={"ENTER"} bigKey disabled={playedToday} />
                 {keys3.map((key) => {
                     return <Key key={key} keyVal={key} disabled={disabledLetters.includes(key) || playedToday} />;
