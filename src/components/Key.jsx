@@ -19,7 +19,7 @@ function Key({ keyVal, disabled, bigKey = false }) {
 
     return (
         <div 
-            className={`key border rounded bg-light fw-bold text-center d-flex align-items-center justify-content-center text-uppercase ${playedToday ? '' : 'cursor-pointer'}`}            
+            className={`key border rounded fw-bold text-center d-flex align-items-center justify-content-center text-uppercase ${playedToday ? '' : 'cursor-pointer'}`}            
             style={{
                 padding: '0.75rem',
                 width: bigKey ? '62px' : '40px',
