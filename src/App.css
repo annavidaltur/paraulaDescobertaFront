@@ -1,29 +1,29 @@
 body{
-  font-family: 'Roboto', sans-serif !important;
+  font-family: Inter,ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";
 }
 
 .custom-border.current-cell {
   background-color: #b9ebff;
-  border: 1px solid #417CF2 !important;
+  border: 2px solid #417CF2 !important;
   color:#0056b3;
 }
 
 #correct {
-  background-color: #70e068;
-  border: 1px solid #528d4e !important;
-  color: #44643a;
+  background-color: #43a047;
+  border: 2px solid #43a047 !important;
+  color: #fff;
 }
 
 #almost {
-  background-color: #FFCC00;
-  border: 1px solid #8b7107 !important;
-  color: #7a640c;
+  background-color: #e4a81d;
+  border: 2px solid #e4a81d !important;
+  color: #fff;
 }
 
 #error {
-  background-color: #cecbcb;
-  border: 1px solid #7a7a7a !important;
-  color: #707070;
+  background-color: #757575;
+  border: 2px solid #757575 !important;
+  color: #fff;
 }
 
 .cursor-pointer {

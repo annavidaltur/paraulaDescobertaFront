@@ -22,7 +22,7 @@ function Letter({ letterPos, attemptVal }) {
     
     return (
         <div
-            className={`col border custom-border rounded d-flex justify-content-center align-items-center fw-bold fs-4 ${cellClassName}`}
+            className={`col border custom-border rounded d-flex justify-content-center align-items-center fw-bold ${cellClassName}`}
             id={letterState}
             onClick={handleCellClick}
             style={{
@@ -30,7 +30,8 @@ function Letter({ letterPos, attemptVal }) {
                 maxWidth: "60px",
                 minWidth: "30px",
                 width: "100%",
-                margin: "2px"
+                margin: "2px",
+                fontSize: "1.8rem",
             }}
         >
             {letter}
