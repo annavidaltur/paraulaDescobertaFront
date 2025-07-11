@@ -12,12 +12,15 @@ import LegendModal from './components/modals/Legend/LegenModal';
 
 const urlBack = import.meta.env.VITE_URL_BACK;
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AppContext = createContext();
 
 function App() {
   const [board, setBoard] = useState(boardDefault); // Tablero
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 }); // Puntero fila,col
   const [disabledLetters, setDisabledLetters] = useState([]); // Letras deshabilitadas del teclado
+  const [correctLetters, setCorrectLetters] = useState([]); // Lletres correctes del teclat
+  const [almostLetters, setAlmostLetters] = useState([]); // Letras casi correctas del teclado
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false })
   const [elapsedTime, setElapsedTime] = useState(0);
   const [modalGameOverOpen, setModalGameOverOpen] = useState(false); // Modal fi de joc
@@ -105,7 +108,7 @@ function App() {
       // Realizamos una solicitud al backend para verificar si la palabra existe en la batería
       const response = await axios.post(urlBack + '/CheckWord', { word: currWord, attempt: currAttempt.attempt + 1 }, {withCredentials: true });
       const data = response.data;
-
+      console.log('Respuesta del backend:', data);
       if (data.exists) {
         setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 }) // Pasamos a la siguiente fila y reseteamos la posición a 0
 
@@ -121,6 +124,8 @@ function App() {
 
         // Deshabilitamos las letras del teclado que no sean correctas ni almost
         setDisabledLetters((prev) => [...prev, ...data.disabledLetters])
+        setCorrectLetters((prev) => [...prev, ...data.correctLetters])
+        setAlmostLetters((prev) => [...prev, ...data.almostLetters])
 
         // La palabra no es correcta y ha hecho 6 intentos
         if (currAttempt.attempt === 5) {
@@ -185,12 +190,14 @@ function App() {
           onSelectLetter, onEnter, onDelete,
           onMoveRight, onMoveLeft,
           disabledLetters, setDisabledLetters,
+          correctLetters, setCorrectLetters,
+          almostLetters, setAlmostLetters,
           gameOver, setGameOver,
           elapsedTime, setElapsedTime,
           rowState,
           playedToday
         }}>
-        <Container className="mt-5">
+        <Container className="mt-5 p-1">
       <Row>
         <Col className="text-center">
           <Board />

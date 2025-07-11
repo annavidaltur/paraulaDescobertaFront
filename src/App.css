@@ -8,6 +8,14 @@ body{
   color:#0056b3;
 }
 
+.key{
+  padding: 0.9rem;
+  margin: 2px;
+  margin-bottom: 2px;
+  border: 1px solid #e2e8f0;
+  background-color: #e2e8f0;
+}
+
 #correct {
   background-color: #43a047;
   border: 2px solid #43a047 !important;
@@ -33,3 +41,4 @@ body{
 #disabled {  
   background-color:rgb(155, 155, 155);  
 }
+
