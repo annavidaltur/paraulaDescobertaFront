@@ -1,6 +1,4 @@
-import Letter from "../../Letter";
 import CustomModal from "../CustomModal";
-import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import LegendLetter from "./LegendLetter";
 
 const LegendModal = ({isOpen, onClose}) => {
