@@ -9,6 +9,7 @@ import UserStatsModal from './components/modals/UserStats/UserStatsModal';
 import { Container, Row, Col } from 'react-bootstrap';
 import Header from './components/Header';
 import LegendModal from './components/modals/Legend/LegenModal';
+import NoExisteixModal from './components/modals/NoExisteix/NoExisteixModal';
 
 const urlBack = import.meta.env.VITE_URL_BACK;
 
@@ -28,6 +29,7 @@ function App() {
   const [modalUserStatsOpen, setModalUserStatsOpen] = useState(false); // Modal estadístiques
   const [playedToday, setPlayedToday] = useState(false); 
   const [modalLegendOpen, setModalLegendOpen] = useState(false); // Modal llegenda
+  const [modalNoExisteixOpen, setModalNoExisteixOpen] = useState(false); // Modal no existeix la paraula
 
   useEffect(() => {
     const updateCookie = async () => {
@@ -133,7 +135,7 @@ function App() {
           openModalGameOver();
         }
       } else {
-        alert("No existeix la paraula");
+        setModalNoExisteixOpen(true);
       }
 
 
@@ -178,6 +180,10 @@ function App() {
     setModalLegendOpen(false);
   };
 
+  const closeModalNoExisteix = () => {
+    setModalNoExisteixOpen(false);
+  };
+
   return (
     <div className="App">
       
@@ -206,11 +212,12 @@ function App() {
       </Row>
     </Container>
 
+    {/* Modals */}
+    <NoExisteixModal isOpen={modalNoExisteixOpen} onClose={closeModalNoExisteix} />
     <LegendModal isOpen={modalLegendOpen} onClose={closeModalLegend} />
     <GameOverModal isOpen={modalGameOverOpen} onClose={closeModalGameOver} />
     <UserStatsModal isOpen={modalUserStatsOpen} onClose={closeModalUserStats} />
-        {/* <Timer /> */}
-      </AppContext.Provider>
+    </AppContext.Provider>
     </div>
   );
 }
